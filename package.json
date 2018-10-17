@@ -1,0 +1,37 @@
+{
+  "name": "node-covenantsql",
+  "version": "0.0.2",
+  "keywords": [
+    "CovenantSQL",
+    "driver"
+    "nodejs",
+    "database",
+    "blockchain"
+  ],
+  "main": "dist/node-covenantsql.cjs.js",
+  "module": "dist/node-covenantsql.esm.js",
+  "description": "A node.js driver for covenantsql.",
+  "dependencies": {
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
+    "sqlstring": "^2.3.1"
+  },
+  "engines": {
+    "node": ">= 0.6"
+  },
+  "devDependencies": {
+    "rollup": "^0.66.0",
+    "rollup-plugin-commonjs": "^9.1.0",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-node-resolve": "^3.0.0"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "node test/test.js",
+    "pretest": "npm run build"
+  },
+  "files": [
+    "dist"
+  ]
+}
