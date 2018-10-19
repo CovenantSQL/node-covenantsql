@@ -25,7 +25,7 @@ class Connection {
           if (datarows !== null) {
             this._state = 'connected'
             this._connectCalled = true
-            return true
+            return this
           }
         })
     } else {

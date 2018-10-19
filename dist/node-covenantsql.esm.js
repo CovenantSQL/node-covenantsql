@@ -26,7 +26,7 @@ class Connection {
           if (datarows !== null) {
             this._state = 'connected';
             this._connectCalled = true;
-            return true
+            return this
           }
         })
     } else {
@@ -172,7 +172,7 @@ const format = (sql, values) => {
  * @public
  */
 const createConnection = (config) => {
-  return new Connection({ config: new ConnectionConfig(config) })
+  return (new Connection({ config: new ConnectionConfig(config) })).connect()
 };
 
 export { format, createConnection };

@@ -27,11 +27,7 @@ var connection = covenantsql.createConnection({
   database: `${DB_ID}`
   key_dir: path.resolve(`${KEY_FILE_RELATIVE_PATH}`),
   https_pem_dir: path.resolve(`${PEM_FILE_RELATIVE_PATH}`)
-})
-
-connection.connect().then(status => {
-  console.log(status) // true
-
+}).then(connection => {
   // read
   connection.query('SELECT ? + ?', [1, 2]).then(data => {
     console.log(data) // [{ '1+2': 3 }]

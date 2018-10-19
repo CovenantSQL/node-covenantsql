@@ -34,5 +34,5 @@ export const format = (sql, values) => {
  * @public
  */
 export const createConnection = (config) => {
-  return new Connection({ config: new ConnectionConfig(config) })
+  return (new Connection({ config: new ConnectionConfig(config) })).connect()
 }

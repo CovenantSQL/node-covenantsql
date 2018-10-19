@@ -1,9 +1,9 @@
 {
   "name": "node-covenantsql",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "keywords": [
     "CovenantSQL",
-    "driver"
+    "driver",
     "nodejs",
     "database",
     "blockchain"
