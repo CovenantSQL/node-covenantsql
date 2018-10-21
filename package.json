@@ -23,6 +23,7 @@
     "@babel/core": "^7.1.2",
     "babel-jest": "^23.6.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "coveralls": "^3.0.2",
     "jest": "^23.6.0",
     "rollup": "^0.66.0",
     "rollup-plugin-commonjs": "^9.1.0",
@@ -35,6 +36,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:prod": "npm run lint && npm run test -- --coverage --no-cache",
+    "report-coverage": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "pretest": "npm run build"
   },
   "jest": {
@@ -60,7 +62,10 @@
         "statements": 0
       }
     },
-    "coverageReporters": ["json", "html"],
+    "coverageReporters": [
+      "json",
+      "html"
+    ],
     "collectCoverage": true,
     "collectCoverageFrom": [
       "src/*.{js,ts}"
