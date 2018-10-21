@@ -82,7 +82,7 @@ class Connection {
    * @return {Promise}
    */
   _requestPromise (method, sql) {
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
     if (this._connectCalled && this._state === 'disconnected') throw new Error('COVENANTSQL_ERR: NO_CONNECTION')
 
     const uri = `https://${this._config.host}:${this._config.port}/v1/${method}`;
@@ -95,6 +95,7 @@ class Connection {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       form: { assoc: true, database, query: sql },
+      rejectUnauthorized: false,
       agentOptions: { cert, key }
     };
 
