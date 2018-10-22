@@ -1,5 +1,17 @@
 # node-covenantsql
 
+<p align="left">
+    <a href="https://github.com/prettier/prettier">
+        <img src="https://img.shields.io/badge/styled_with-prettier-ff69b4.svg"
+            alt=""></a>
+    <a href="https://codecov.io/gh/CovenantSQL/node-covenantsql">
+        <img src="https://codecov.io/gh/CovenantSQL/node-covenantsql/branch/master/graph/badge.svg"
+            alt="Coverage"></a>
+    <a href="https://opensource.org/licenses/Apache-2.0">
+        <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"
+            alt="License"></a>
+</p>
+
 This repo is nodejs driver for [CovenantSQL](https://github.com/CovenantSQL/CovenantSQL)
 
 ## Install
