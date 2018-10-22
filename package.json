@@ -64,8 +64,11 @@
     },
     "coverageReporters": [
       "json",
+      "lcov",
+      "clover",
       "html"
     ],
+    "coverageDirectory": "./coverage/",
     "collectCoverage": true,
     "collectCoverageFrom": [
       "src/*.{js,ts}"
