@@ -1,9 +1,6 @@
 # node-covenantsql
 
 <p align="left">
-    <a href="https://github.com/prettier/prettier">
-        <img src="https://img.shields.io/badge/styled_with-prettier-ff69b4.svg"
-            alt=""></a>
     <a href="https://codecov.io/gh/CovenantSQL/node-covenantsql">
         <img src="https://codecov.io/gh/CovenantSQL/node-covenantsql/branch/master/graph/badge.svg"
             alt="Coverage"></a>
