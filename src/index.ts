@@ -14,25 +14,19 @@
  * limitations under the License.
  */
 
-import Connection from './Connection.js';
-import ConnectionConfig from './ConnectionConfig'
+import {Connection} from './Connection';
+import {ConnectionConfig} from './ConnectionConfig'
 
 /**
  * Format SQL and replacement values into a SQL string.
- * @param  {[type]} sql The SQL for the query
- * @param  {Array} [values] Any values to insert into placeholders in sql
- * @return {String} Formatted SQL string
  */
-export const format = (sql, values) => {
+export function format (sql: string, values: object|Array<any>): any {
   return Connection.format(sql, values)
 }
 
 /**
  * Create a new connection instance
- * @param  {Object} Config configuration for new ConvenantSQL connection
- * @return {Connection} A new ConvenantSQL connection
- * @public
  */
-export const createConnection = (config) => {
-  return (new Connection({ config: new ConnectionConfig(config) })).connect()
+export function createConnection (config: ConnectionConfig): Promise<Connection> {
+  return (new Connection(config)).connect()
 }
