@@ -16,6 +16,11 @@
 import { Connection } from './Connection';
 import { ConnectionConfig } from './ConnectionConfig';
 /**
+ * export interfaces and classes directly
+ */
+export * from './ConnectionConfig';
+export { ConnectionConfig } from './ConnectionConfig';
+/**
  * Format SQL and replacement values into a SQL string.
  */
 export declare function format(sql: string, values: object | Array<any>): any;

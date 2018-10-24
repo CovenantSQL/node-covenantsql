@@ -9,7 +9,7 @@
             alt="License"></a>
 </p>
 
-This repo is nodejs driver for [CovenantSQL](https://github.com/CovenantSQL/CovenantSQL)
+This repo is nodejs driver for [CovenantSQL](https://github.com/CovenantSQL/CovenantSQL) written by TypeScript.
 
 ## Install
 
@@ -25,28 +25,34 @@ yarn add node-covenantsql
 ## Get started
 Follow CovenantSQL [Quickstart](https://testnet.covenantsql.io/quickstart) to get you prepared.
 
-```javascript
-var path = require('path')
-var covenantsql = require('node-covenantsql')
+```typescript
+const path = require('path')
+const covenantsql = require('../dist/node-covenantsql.cjs.js')
 
-var connection = covenantsql.createConnection({
-  dsn: `covenant://${DB_ID}`,
+const config = {
   host: 'e.morenodes.com',
   port: 11108,
   database: `${DB_ID}`
   key_dir: path.resolve(`${KEY_FILE_RELATIVE_PATH}`),
   https_pem_dir: path.resolve(`${PEM_FILE_RELATIVE_PATH}`)
-}).then(connection => {
+}
+
+covenantsql.createConnection(config).then(async (connection: any) => {
   // read
-  connection.query('SELECT ? + ?', [1, 2]).then(data => {
-    console.log(data) // [{ '1+2': 3 }]
-  })
+  const data1 = await connection.query('select ? + ?', [2.1, 3.2])
+  console.log(data1)
+
+  const data2 = await connection.query('SELECT * FROM test_python_driver')
+  console.log(data2)
 
   // write
-  connection.exec('REPLACE into ?? values(?)', ['test_python_driver', 1]).then(status => {
-    console.log(status) // true
-  })
-})
+  const status1 = await connection.exec('replace into test_python_driver values(?), (?), (?)', ['test11', 'test22', 'test33'])
+  console.log(`exec1 status:`, status1)
+
+  const status2 = await connection.exec('replace into test_python_driver values("test")')
+  console.log(`exec2 status:`, status2)
+}).catch((e: any) => console.log(e))
+
 ```
 
 ## License

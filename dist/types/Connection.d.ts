@@ -36,11 +36,11 @@ export declare class Connection {
     /**
      * Query a SQL on CovenantSQL
      */
-    query(sql: string, values: object | Array<any>, isEstablish?: boolean): Promise<any>;
+    query(sql: string, values?: object | Array<any>, isEstablish?: boolean): Promise<any>;
     /**
      * Exec a SQL on CovenantSQL
      */
-    exec(sql: string, values: object | Array<any>): Promise<any>;
+    exec(sql: string, values?: object | Array<any>): Promise<any>;
     /**
      * _requestPromise: request promise for query and exec
      */

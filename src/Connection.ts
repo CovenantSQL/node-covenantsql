@@ -77,14 +77,14 @@ export class Connection {
    */
   async query (
     sql: string,
-    values: object|Array<any>,
+    values?: object|Array<any>,
     isEstablish: boolean = false
   ): Promise<any> {
     if (!isEstablish && this._state === 'disconnected')
       throw new Error('COVENANTSQL_ERR: NO_CONNECTION')
 
     try {
-      const formattedSql = Connection.format(sql, values)
+      const formattedSql = Connection.format(sql, values || [])
       const result = await this._requestPromise('query', formattedSql)
 
       const _parsed = this._parseResult(result)
@@ -99,13 +99,13 @@ export class Connection {
    */
   async exec (
     sql: string,
-    values: object|Array<any>
+    values?: object|Array<any>
   ): Promise<any> {
     if (this._state === 'disconnected')
       throw new Error('COVENANTSQL_ERR: NO_CONNECTION')
 
     try {
-      const formattedSql = Connection.format(sql, values)
+      const formattedSql = Connection.format(sql, values || [])
       const result = await this._requestPromise('exec', formattedSql)
       const _parsed = this._parseResult(result)
       return _parsed.status === 'ok' || _parsed.status
