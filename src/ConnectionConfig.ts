@@ -2,7 +2,6 @@
  * ConnectionConfig as ConvenantSQL connection configs
  */
 export interface ConnectionConfig {
-
   /**
    * Connection host
    */
@@ -27,5 +26,4 @@ export interface ConnectionConfig {
    * Connection HTTPS PEM directory
    */
   readonly https_pem_dir: string
-
 }

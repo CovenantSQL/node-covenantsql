@@ -14,25 +14,27 @@
  * limitations under the License.
  */
 
-import {Connection} from './Connection';
-import {ConnectionConfig} from './ConnectionConfig'
+import { Connection } from './Connection'
+import { ConnectionConfig } from './ConnectionConfig'
 
 /**
  * export interfaces and classes directly
  */
 export * from './ConnectionConfig'
-export {ConnectionConfig} from './ConnectionConfig'
+export { ConnectionConfig } from './ConnectionConfig'
 
 /**
  * Format SQL and replacement values into a SQL string.
  */
-export function format (sql: string, values: object|Array<any>): any {
+export function format(sql: string, values: object | Array<any>): any {
   return Connection.format(sql, values)
 }
 
 /**
  * Create a new connection instance
  */
-export function createConnection (config: ConnectionConfig): Promise<Connection> {
-  return (new Connection(config)).connect()
+export function createConnection(
+  config: ConnectionConfig
+): Promise<Connection> {
+  return new Connection(config).connect()
 }
