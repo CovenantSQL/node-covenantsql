@@ -15,6 +15,7 @@
   "dependencies": {
     "@types/request-promise": "^4.1.42",
     "@types/sqlstring": "^2.2.0",
+    "exec-sh": "^0.3.2",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
     "sqlstring": "^2.3.1"
