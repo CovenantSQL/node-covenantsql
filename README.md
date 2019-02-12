@@ -25,34 +25,56 @@ yarn add node-covenantsql
 ## Get started
 Follow CovenantSQL [Quickstart](https://testnet.covenantsql.io/quickstart) to get you prepared.
 
-```typescript
-const path = require('path')
-const covenantsql = require('../dist/node-covenantsql.cjs.js')
 
+### configs for driver
+
+- If the CovenantSQL endpoint comes with `HTTPS` then `.pem` and `.key` files are needed for requests:
+
+```javascript
 const config = {
-  host: 'e.morenodes.com',
-  port: 11108,
-  database: `${DB_ID}`
-  key_dir: path.resolve(`${KEY_FILE_RELATIVE_PATH}`),
-  https_pem_dir: path.resolve(`${PEM_FILE_RELATIVE_PATH}`)
+    endpoint: 'e.morenodes.com:11108', // testnet endpoint with https
+    database: `${DB_ID}`, // your DB id created by `cql` tools
+    key_dir: path.resolve(`${KEY_FILE_RELATIVE_PATH}`), // your key file
+    https_pem_dir: path.resolve(`${PEM_FILE_RELATIVE_PATH}`) // your pem file (cert file)
 }
+```
 
-covenantsql.createConnection(config).then(async (connection: any) => {
-  // read
-  const data1 = await connection.query('select ? + ?', [2.1, 3.2])
-  console.log(data1)
+- If only `HTTP` is needed, then your config could be:
 
-  const data2 = await connection.query('SELECT * FROM test_python_driver')
-  console.log(data2)
+```javascript
+const config = {
+    endpoint: 'localhost:11105', // local testnet endpoint without https
+    database: `${DB_ID}`, // your DB id created by `cql` tools
+    bypassPem: true // bypass https config
+}
+```
+### connect and query
+```typescript
+const cql from 'node-covenantsql'
 
-  // write
-  const status1 = await connection.exec('replace into test_python_driver values(?), (?), (?)', ['test11', 'test22', 'test33'])
-  console.log(`exec1 status:`, status1)
+const config = {...} // see above
 
-  const status2 = await connection.exec('replace into test_python_driver values("test")')
-  console.log(`exec2 status:`, status2)
+cql.createConnection(config).then(async (connection: any) => {
+    // read
+    const data1 = await connection.query("select ? + ?", [2.1, 3.2]);
+    console.log(data1);
+        
+    // write
+    const createTableSQL = `
+    CREATE TABLE IF NOT EXISTS contacts (\
+    contact_id INTEGER PRIMARY KEY,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    email text NOT NULL UNIQUE,
+    phone text NOT NULL UNIQUE
+    );
+    `
+    const status1 = await connection.exec(createTableSQL)
+    console.log(`exec1 status:`, status1);
+
+    const data2 = await connection.query("show tables;");
+    console.log(data2);
 }).catch((e: any) => console.log(e))
-
 ```
 
 ## License
