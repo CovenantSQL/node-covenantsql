@@ -12,11 +12,11 @@ export declare class Connection {
     /**
      * Connection key buffer
      */
-    readonly key: Buffer;
+    readonly key?: Buffer;
     /**
      * Connection key buffer
      */
-    readonly https_pem: Buffer;
+    readonly https_pem?: Buffer;
     /**
      * Connect() called or not
      */

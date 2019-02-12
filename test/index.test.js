@@ -1,13 +1,12 @@
-import path from 'path'
 const covenantsql = require('../src')
 
 const connectionConfig = {
-  dsn: 'covenant://053d0bb19637ffc7b4a94e3c79cc71b67a768813b09e4b67f1d6159902754a8b',
-  host: 'e.morenodes.com',
-  port: 11108,
-  database: '053d0bb19637ffc7b4a94e3c79cc71b67a768813b09e4b67f1d6159902754a8b',
-  key_dir: path.resolve(__dirname, './ssl/write.test.covenantsql.io.key'),
-  https_pem_dir: path.resolve(__dirname, './ssl/write.test.covenantsql.io.pem')
+  host: 'localhost',
+  port: 11105,
+  database: '0a10b74439f2376d828c9a70fd538dac4b69e0f4065424feebc0f5dbc8b34872',
+  bypassPem: true,
+  // key_dir: path.resolve(__dirname, './ssl/write.test.covenantsql.io.key'),
+  // https_pem_dir: path.resolve(__dirname, './ssl/write.test.covenantsql.io.pem')
 }
 
 describe("Format test", () => {

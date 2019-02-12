@@ -92,8 +92,10 @@ var Connection = /** @class */ (function () {
          */
         this._connectCalled = false;
         this.config = _config;
-        this.key = fs.readFileSync(_config.key_dir);
-        this.https_pem = fs.readFileSync(_config.https_pem_dir);
+        if (!_config.bypassPem) {
+            this.key = Buffer.from(_config.key_dir);
+            this.https_pem = fs.readFileSync(_config.https_pem_dir);
+        }
         this._connectCalled = false;
         this._state = 'disconnected';
     }
@@ -109,8 +111,9 @@ var Connection = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (this._connectCalled || this._state === 'connected')
-                            throw new Error('COVENANTSQL_ERR: CONNECTION_HAS_INIT');
+                        if (this._connectCalled || this._state === 'connected') {
+                            return [2 /*return*/, this];
+                        }
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
@@ -120,7 +123,7 @@ var Connection = /** @class */ (function () {
                         if (datarows !== null) {
                             ObjectUtils.assign(this, {
                                 _state: 'connected',
-                                _connectCalled: true
+                                _connectCalled: true,
                             });
                             return [2 /*return*/, this];
                         }
@@ -143,21 +146,17 @@ var Connection = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!isEstablish && this._state === 'disconnected')
-                            throw new Error('COVENANTSQL_ERR: NO_CONNECTION');
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
+                        _a.trys.push([0, 2, , 3]);
                         formattedSql = Connection.format(sql, values || []);
                         return [4 /*yield*/, this._requestPromise('query', formattedSql)];
-                    case 2:
+                    case 1:
                         result = _a.sent();
                         _parsed = this._parseResult(result);
                         return [2 /*return*/, _parsed.datarows];
-                    case 3:
+                    case 2:
                         e_2 = _a.sent();
                         throw new Error(e_2);
-                    case 4: return [2 /*return*/];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
@@ -171,21 +170,17 @@ var Connection = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (this._state === 'disconnected')
-                            throw new Error('COVENANTSQL_ERR: NO_CONNECTION');
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
+                        _a.trys.push([0, 2, , 3]);
                         formattedSql = Connection.format(sql, values || []);
                         return [4 /*yield*/, this._requestPromise('exec', formattedSql)];
-                    case 2:
+                    case 1:
                         result = _a.sent();
                         _parsed = this._parseResult(result);
                         return [2 /*return*/, _parsed.status === 'ok' || _parsed.status];
-                    case 3:
+                    case 2:
                         e_3 = _a.sent();
                         throw new Error(e_3);
-                    case 4: return [2 /*return*/];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
@@ -195,28 +190,38 @@ var Connection = /** @class */ (function () {
      */
     Connection.prototype._requestPromise = function (method, sql) {
         return __awaiter(this, void 0, void 0, function () {
-            var uri, database, key, cert, options;
+            var httpPrefix, database, options, uri, uri, key, cert;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
-                        if (this._connectCalled && this._state === 'disconnected')
-                            throw new Error('COVENANTSQL_ERR: NO_CONNECTION');
-                        uri = "https://" + this.config.host + ":" + this.config.port + "/v1/" + method;
+                        httpPrefix = this.config.bypassPem ? 'http' : 'https';
                         database = this.config.database;
-                        key = this.key;
-                        cert = this.https_pem;
-                        options = {
-                            uri: uri,
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            form: { assoc: true, database: database, query: sql },
-                            rejectUnauthorized: false,
-                            agentOptions: { cert: cert, key: key }
-                        };
-                        return [4 /*yield*/, rp(options)
-                                .catch(function (e) {
-                                throw new Error("\nCOVENANTSQL_ERR:\n  STATUS_CODE " + e.statusCode + ",\n  ERROR " + e.error);
+                        options = null;
+                        if (this.config.bypassPem) {
+                            uri = "http://" + this.config.endpoint + "/v1/" + method;
+                            options = {
+                                uri: uri,
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                form: { assoc: true, database: database, query: sql },
+                                rejectUnauthorized: false,
+                            };
+                        }
+                        else {
+                            uri = "https://" + this.config.endpoint + "/v1/" + method;
+                            key = this.key;
+                            cert = this.https_pem;
+                            options = {
+                                uri: uri,
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                form: { assoc: true, database: database, query: sql },
+                                rejectUnauthorized: false,
+                                agentOptions: { cert: cert, key: key },
+                            };
+                        }
+                        return [4 /*yield*/, rp(options).catch(function (e) {
+                                throw new Error("status code: " + e.statusCode + ",\n" + e.error);
                             })];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -262,7 +267,11 @@ function format$1(sql, values) {
  * Create a new connection instance
  */
 function createConnection(config) {
-    return (new Connection(config)).connect();
+    return new Connection(config).connect();
 }
+var index = {
+    createConnection: createConnection
+};
 
+export default index;
 export { format$1 as format, createConnection };

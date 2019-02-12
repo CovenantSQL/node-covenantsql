@@ -38,3 +38,7 @@ export function createConnection(
 ): Promise<Connection> {
   return new Connection(config).connect()
 }
+
+export default {
+  createConnection
+}

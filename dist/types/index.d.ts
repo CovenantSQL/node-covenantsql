@@ -28,3 +28,7 @@ export declare function format(sql: string, values: object | Array<any>): any;
  * Create a new connection instance
  */
 export declare function createConnection(config: ConnectionConfig): Promise<Connection>;
+declare const _default: {
+    createConnection: typeof createConnection;
+};
+export default _default;

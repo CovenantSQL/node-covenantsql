@@ -1,34 +1,28 @@
-var path = require('path')
 var covenantsql = require('../dist/node-covenantsql.cjs.js')
 
 covenantsql
   .createConnection({
-    dsn:
-      'covenant://053d0bb19637ffc7b4a94e3c79cc71b67a768813b09e4b67f1d6159902754a8b',
-    host: 'e.morenodes.com',
-    port: 11108,
+    endpoint: 'localhost:11105',
     database:
-      '053d0bb19637ffc7b4a94e3c79cc71b67a768813b09e4b67f1d6159902754a8b',
-    key_dir: path.resolve(
-      __dirname,
-      '../test/ssl/write.test.covenantsql.io.key'
-    ),
-    https_pem_dir: path.resolve(
-      __dirname,
-      '../test/ssl/write.test.covenantsql.io.pem'
-    ),
+      '0a10b74439f2376d828c9a70fd538dac4b69e0f4065424feebc0f5dbc8b34872',
+    bypassPem: true
   })
   .then(connection => {
     connection.query('select ? + ?', [2.1, 3.2]).then(data => {
       console.log(data)
     })
 
+    const createTableSQL = `
+    CREATE TABLE IF NOT EXISTS contacts (\
+    contact_id INTEGER PRIMARY KEY,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    email text NOT NULL UNIQUE,
+    phone text NOT NULL UNIQUE
+    );
+    `
     connection
-      .exec('replace into test_python_driver values(?), (?), (?)', [
-        'test11',
-        'test22',
-        'test33',
-      ])
+      .exec(createTableSQL)
       .then(status => {
         console.log(`exec status:`, status)
       })
@@ -37,11 +31,8 @@ covenantsql
       })
 
     connection
-      .query('SELECT * FROM test_python_driver')
+      .query('show tables;')
       .then(data => {
         console.log(data)
-      })
-      .catch(e => {
-        console.error(e)
       })
   })
