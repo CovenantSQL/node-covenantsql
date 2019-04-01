@@ -1,5 +1,8 @@
 # node-covenantsql
 
+> Proxy version is build for both web and node environment, so now moved to [covenantsql-proxy-js](https://github.com/CovenantSQL/covenantsql-proxy-js).
+----------------
+
 <p align="left">
     <a href="https://codecov.io/gh/CovenantSQL/node-covenantsql">
         <img src="https://codecov.io/gh/CovenantSQL/node-covenantsql/branch/master/graph/badge.svg"
