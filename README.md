@@ -50,7 +50,7 @@ const config = {
 ```
 ### connect and query
 ```typescript
-const cql from 'node-covenantsql'
+import cql from 'node-covenantsql'
 
 const config = {...} // see above
 
